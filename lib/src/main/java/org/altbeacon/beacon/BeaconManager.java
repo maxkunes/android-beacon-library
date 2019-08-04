@@ -58,6 +58,7 @@ import org.altbeacon.beacon.service.scanner.NonBeaconLeScanCallback;
 import org.altbeacon.beacon.simulator.BeaconSimulator;
 import org.altbeacon.beacon.utils.ProcessUtils;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -65,10 +66,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.function.Consumer;
 
 import org.altbeacon.beacon.service.ScanJob;
 import org.altbeacon.beacon.service.ScanState;
@@ -125,10 +128,10 @@ public class BeaconManager {
     private static final String TAG = "BeaconManager";
 
     @NonNull
-    private final Context mContext;
+    public Context mContext;
 
     @Nullable
-    protected static volatile BeaconManager sInstance = null;
+    public static volatile BeaconManager sInstance = null;
 
     @NonNull
     private final ConcurrentMap<BeaconConsumer, ConsumerInfo> consumers = new ConcurrentHashMap<>();
@@ -270,6 +273,10 @@ public class BeaconManager {
             LogManager.w(TAG, "Setting a short backgroundBetweenScanPeriod has no effect on "+
                     "Android 8+, which is limited to scanning every ~15 minutes");
         }
+    }
+
+    public void onBeaconAdvert(Beacon beacon) {
+
     }
 
     /**

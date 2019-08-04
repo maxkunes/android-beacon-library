@@ -72,6 +72,7 @@ public class Beacon implements Parcelable, Serializable {
 
     protected static DistanceCalculator sDistanceCalculator = null;
 
+    public byte[] scanRecord = null;
     /**
      * The a list of the multi-part identifiers of the beacon.  Together, these identifiers signify
      * a unique beacon.  The identifiers are ordered by significance for the purpose of grouping

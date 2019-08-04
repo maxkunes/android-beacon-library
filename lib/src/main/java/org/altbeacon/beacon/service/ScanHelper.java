@@ -22,6 +22,7 @@ import android.support.annotation.WorkerThread;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.RestrictTo.Scope;
 
+import org.altbeacon.beacon.AltBeacon;
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.BeaconParser;
@@ -43,6 +44,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
@@ -338,7 +340,10 @@ class ScanHelper {
             }
         } else {
 
+            mBeaconManager.onBeaconAdvert(beacon);
+
             mMonitoringStatus.updateNewlyInsideInRegionsContaining(beacon);
+
 
             List<Region> matchedRegions;
             Iterator<Region> matchedRegionIterator;
@@ -395,6 +400,9 @@ class ScanHelper {
             for (BeaconParser parser : ScanHelper.this.mBeaconParsers) {
                 beacon = parser.fromScanData(scanData.scanRecord,
                         scanData.rssi, scanData.device);
+
+                if(beacon != null)
+                    beacon.scanRecord = scanData.scanRecord;
 
                 if (beacon != null) {
                     break;
